@@ -174,7 +174,7 @@ sync
 
 info "Copying boot into $boot_mount"
 mv "${root_mount}/boot/"* "${boot_mount}"
-sync
+sync "${boot_mount}" "${root_mount}"
 
 info "Unmounting..."
 umount "${boot_mount}" "${root_mount}"
