@@ -100,25 +100,35 @@ echo ""
 
 info 'Unmounting SD card if needed…'
 
-blocks="$(lsblk -ln -o PATH,MOUNTPOINT)"
-mountpoints="$(echo "${blocks}" | awk '$1~v {print $2}' v="${SDCARD}.*")"
-mounteddevs="$(echo "${blocks}" | awk '$1~v && $2 {print $1}' v="${SDCARD}.*")"
+blocks="$(lsblk ${SDCARD} -ln -o PATH,MOUNTPOINT)"
+blocksmounted="$(echo "${blocks}" | awk '$2 {print}')"
+blocksmpoints="$(echo "${blocksmounted}" | awk '{print $2}')"
 
-if echo "${mountpoints}" | grep -qw "^/" \
-|| echo "${mountpoints}" | grep -qw "^/boot" \
-|| echo "${mountpoints}" | grep -qw "^/home"
+if echo "${blocksmpoints}" | grep -qw "^/" \
+|| echo "${blocksmpoints}" | grep -qw "^/boot" \
+|| echo "${blocksmpoints}" | grep -qw "^/home"
 then
   echo "${SDCARD} contains the system mounts ! Aborting."
   exit 1
 fi
 
-if [[ -n "${mounteddevs}" ]]; then
-  umount ${mounteddevs}
+IFS='
+' read -d '' -a blocksmounted_array <<< "${blocksmounted}" || true
+
+for blockmounted in "${blocksmounted_array[@]}"; do
+  block="$(echo "${blockmounted}" | awk '{print $1}')"
+  mountpoint="$(echo "${blockmounted}" | awk '{print $2}')"
+
+  if [[ "${mountpoint}" == '[SWAP]' ]]; then
+    swapoff "${block}"
+  else
+    umount "${mountpoint}"
+  fi
   if [[ ${?} -ne 0 ]]; then
-    error 'Impossible to umount SD card... Exiting'
+    error "Impossible to umount ${mountpoint}... Exiting"
     exit 1
   fi
-fi
+done
 
 info "Done."
 echo ""
@@ -135,15 +145,14 @@ name=root,               type=83
 "
 
 echo "${sfdisk_input}" | \
-sfdisk "${SDCARD}"
-
+sfdisk "${SDCARD}" -W always
 sync
 info "Done."
 
 # Getting new partition paths
-blocks="$(lsblk -ln -o PATH,MOUNTPOINT)"
-boot_block="${SDCARD}1"
-root_block="${SDCARD}2"
+blocks="$(lsblk "${SDCARD}" -ln -o PATH,MOUNTPOINT | awk '{print $1}')"
+boot_block="$(echo "${blocks}" | grep "^${SDCARD}.*1$")"
+root_block="$(echo "${blocks}" | grep "^${SDCARD}.*2$")"
 
 info "Formating partitions…"
 mkfs.vfat "${boot_block}"
