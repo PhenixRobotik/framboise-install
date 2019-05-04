@@ -77,9 +77,9 @@ download "${img_url}" "${img_path}"
 info "Done."
 
 md5check() {
-  pushd "${download_path}" >/dev/null
+  pushd "${download_path}" >/dev/null || return 1
   if md5sum --status -c "${md5_path}"; then err=0; else err=1; fi
-  popd >/dev/null
+  popd >/dev/null || return 1
   return $err
 }
 
@@ -100,7 +100,7 @@ echo ""
 
 info 'Unmounting SD card if needed…'
 
-blocks="$(lsblk ${SDCARD} -ln -o PATH,MOUNTPOINT)"
+blocks="$(lsblk "${SDCARD}" -ln -o PATH,MOUNTPOINT)"
 blocksmounted="$(echo "${blocks}" | awk '$2 {print}')"
 blocksmpoints="$(echo "${blocksmounted}" | awk '{print $2}')"
 
@@ -113,7 +113,7 @@ then
 fi
 
 IFS='
-' read -d '' -a blocksmounted_array <<< "${blocksmounted}" || true
+' read -r -d '' -a blocksmounted_array <<< "${blocksmounted}" || true
 
 for blockmounted in "${blocksmounted_array[@]}"; do
   block="$(echo "${blockmounted}" | awk '{print $1}')"
@@ -177,8 +177,8 @@ sync
 # Write the files to the disk
 
 info "Extracting files into ${root_mount}..."
-bsdtar -xpf $ALARM_PATH -C "${root_mount}"
-info ' Syncing... (this might take a while)'
+bsdtar -xpf "${img_path}" -C "${root_mount}"
+info "Syncing... (this might take a while)"
 sync
 
 info "Copying boot into $boot_mount"
