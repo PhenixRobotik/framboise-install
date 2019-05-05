@@ -219,6 +219,11 @@ step_flash_finish() {
 ###############################################################################
 # Generate custom image
 
+custom_image_path() {
+  user_home="$(as_user bash -c 'echo $HOME')"
+  echo "${user_home}/.cache/custom_archlinuxarm.tar.bz2"
+}
+
 create_and_mount_fake_device() {
   info "Creating file for fake device…"
   user_home="$(as_user bash -c 'echo $HOME')"
@@ -264,8 +269,7 @@ prepare_install() {
 }
 
 compress_image() {
-  user_home="$(as_user bash -c 'echo $HOME')"
-  tar_image="${user_home}/.cache/custom_archlinuxarm.tar.bz2"
+  tar_image="$(custom_image_path)"
 
   info "Compressing to ${tar_image}…"
   tar -C "${root_mount}"\
@@ -276,4 +280,8 @@ compress_image() {
     "${tar_image}" \
     "."
   info "Done."
+}
+
+setup_custom_image() {
+  img_path="$(custom_image_path)"
 }

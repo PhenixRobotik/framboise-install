@@ -25,5 +25,6 @@ step_download_image
 step_umount_device
 step_partition_device
 step_extract_to_disk
+step_umount_device
 
-download_qemu
+step_flash_finish

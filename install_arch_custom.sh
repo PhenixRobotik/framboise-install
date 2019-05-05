@@ -14,16 +14,15 @@ echo '║                                                           ║'
 echo '╚═══════════════════════════════════════════════════════════╝'
 
 # Custom config to disable prompts
-rpi_version=3
 SDCARD=/dev/loop0
 
 prompt_device
 prompt_confirmation
-prompt_raspberry_pi_image
+setup_custom_image
 
-step_download_image
 step_umount_device
-step_partition_device_and_mount
+step_partition_device
 step_extract_to_disk
+step_umount_device
 
-downloadQemu
+step_flash_finish

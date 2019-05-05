@@ -23,3 +23,6 @@ step_partition_device
 step_extract_to_disk
 
 download_qemu
+step_mount_device
+prepare_install
+compress_image
