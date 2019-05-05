@@ -124,6 +124,8 @@ step_umount_device() {
   set -x
   echo "${blocksmounted}"
   while read -r blockmounted; do
+    [[ -z "${blockmounted}" ]] && continue
+
     block="$(echo "${blockmounted}" | awk '{print $1}')"
     mountpoint="$(echo "${blockmounted}" | awk '{print $2}')"
 
