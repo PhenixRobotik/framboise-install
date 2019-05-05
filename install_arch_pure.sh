@@ -4,7 +4,7 @@ set -euf -o pipefail
 # shellcheck source=functions.sh
 source "functions.sh"
 
-test_sudo
+test_sudo "$@"
 
 echo '╔═══════════════════════════════════════════════════════════╗'
 echo '║                                                           ║'
@@ -13,9 +13,8 @@ echo '║          ArchLinuxARM on your microSD card.               ║'
 echo '║                                                           ║'
 echo '╚═══════════════════════════════════════════════════════════╝'
 
-# Custom config to disable prompts
 rpi_version=3
-SDCARD=/dev/loop0
+# create_and_mount_fake_device
 
 prompt_device
 prompt_confirmation
@@ -27,4 +26,4 @@ step_umount_device
 step_partition_device
 step_extract_to_disk
 
-downloadQemu
+download_qemu

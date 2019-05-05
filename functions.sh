@@ -219,16 +219,34 @@ step_flash_finish() {
 ###############################################################################
 # Generate custom image
 
+create_and_mount_fake_device() {
+  info "Creating file for fake device…"
+  user_home="$(as_user bash -c 'echo $HOME')"
+  DeviceFile="${user_home}/.cache/lodevice.img"
+  # 2GB file should be enough
+  fallocate "${DeviceFile}" -l 2G
+  # dd if="/dev/zero" of="${DeviceFile}" bs=100M count=20
+  info "Done."
+
+  info "Mounting fake device…"
+  SDCARD="$(losetup -f)"
+  losetup "${SDCARD}" "${DeviceFile}"
+  info "Done."
+}
+
 download_qemu() {
+  info "Installing dependencies for chroot…"
   hash "apt-get"  && apt-get install qemu-arm-static
   ArchPackages=( binfmt-qemu-static qemu-arm-static arch-install-scripts )
   hash "yaourt"   && sudo -u "${SUDO_USER}" yaourt -S --noconfirm --needed "${ArchPackages[@]}"
   hash "trizen"   && sudo -u "${SUDO_USER}" trizen -S --noconfirm --needed "${ArchPackages[@]}"
   hash "yay"      && sudo -u "${SUDO_USER}" yay    -S --noconfirm --needed "${ArchPackages[@]}"
   update-binfmts --importdir /usr/lib/binfmt.d/ --enable arm
+
+  info "Done."
 }
 
-prepareInstall() {
+prepare_install() {
   # Install qemu into the chroot
   cp "$(command -v qemu-arm-static)" "${root_mount}/usr/bin"
 
@@ -243,4 +261,19 @@ prepareInstall() {
   arch-chroot "${root_mount}" \
     /usr/bin/qemu-arm-static\
     /usr/bin/bash "/repository/archlinux_prepare_intochroot.sh"
+}
+
+compress_image() {
+  user_home="$(as_user bash -c 'echo $HOME')"
+  tar_image="${user_home}/.cache/custom_archlinuxarm.tar.bz2"
+
+  info "Compressing to ${tar_image}…"
+  tar -C "${root_mount}"\
+    --exclude='/tmp/*' \
+    --exclude='/var/cache/pacman/pkg/' \
+    --xattrs \
+    -cjpvf \
+    "${tar_image}" \
+    "."
+  info "Done."
 }
