@@ -16,6 +16,10 @@ echo '╚═══════════════════════�
 create_and_mount_fake_device
 
 rpi_version=3
+prompt_device
+prompt_confirmation
+prompt_raspberry_pi_image
+
 step_download_image
 
 step_umount_device
@@ -26,3 +30,5 @@ download_qemu
 step_mount_device
 prepare_install
 compress_image
+
+disable_fake_device

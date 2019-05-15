@@ -238,6 +238,9 @@ create_and_mount_fake_device() {
   losetup "${SDCARD}" "${DeviceFile}"
   info "Done."
 }
+disable_fake_device() {
+  losetup -d "${SDCARD}"
+}
 
 download_qemu() {
   info "Installing dependencies for chroot…"
