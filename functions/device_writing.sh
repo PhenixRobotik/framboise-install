@@ -25,7 +25,7 @@ step_extract_dd_image_to_file() {
   mkdir -p "${FunctionsDir}/../cache"
   unzip -o "${img_path}" -d "${FunctionsDir}/../cache"
 
-  DeviceFile="$(find "${FunctionsDir}/../cache" -name "*.img")"
+  DeviceFile="$(find "${FunctionsDir}/../cache" -name "*raspbian*.img")"
 
   mount_fake_device
   detect_partitions

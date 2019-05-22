@@ -22,5 +22,5 @@ create_and_mount_fake_device() {
 }
 
 create_and_mount_fake_device_cleanup() {
-  losetup -d "${SDCARD}" || true
+  losetup -d "${SDCARD}"
 }

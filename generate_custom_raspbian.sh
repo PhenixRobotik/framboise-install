@@ -13,15 +13,14 @@ echo '╚═══════════════════════�
 
 # Custom config to disable prompts
 rpi_version=3
-create_and_mount_fake_device
 
-prompt_device
+SDCARD= # prompt_device
 prompt_confirmation
 prompt_raspberry_pi_image
 
 step_download_image
 
-step_umount_device
+# step_umount_device
 # step_partition_device
 # step_extract_to_disk
 step_extract_dd_image_to_file
