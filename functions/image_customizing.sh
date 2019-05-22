@@ -41,10 +41,10 @@ prepare_install() {
   #   "${root_mount}/etc/resolv.conf"
 
   # Fix for ca-certificates not updating
-  cp             "/etc/ca-certificates/extracted/tls-ca-bundle.pem" \
-    "${root_mount}/etc/ca-certificates/extracted/tls-ca-bundle.pem"
+  # cp             "/etc/ca-certificates/extracted/tls-ca-bundle.pem" \
+  #   "${root_mount}/etc/ca-certificates/extracted/tls-ca-bundle.pem"
 
-  arch-chroot "${root_mount}" /usr/bin/bash || true
+  arch-chroot "${root_mount}" /bin/bash || true
 }
 
 setup_custom_image() {

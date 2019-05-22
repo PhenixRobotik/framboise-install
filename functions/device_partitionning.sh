@@ -17,7 +17,7 @@ step_umount_device() {
     echo "${SDCARD} contains the system mounts ! Aborting."
     exit 1
   fi
-  set -x
+
   echo "${blocksmounted}"
   while read -r blockmounted; do
     [[ -z "${blockmounted}" ]] && continue
