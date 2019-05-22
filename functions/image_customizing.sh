@@ -19,24 +19,6 @@ download_qemu() {
   info "Done."
 }
 
-prepare_install() {
-  # Install qemu into the chroot
-  cp "$(command -v qemu-arm-static)" "${root_mount}/usr/bin"
-
-  # Allow access from chroot to our repository
-  cp -Tr "${ScriptDir}" "root/repository"
-  trap 'cleanupInstall' EXIT
-
-  # Fix for ca-certificates not updating
-  cp             "/etc/ca-certificates/extracted/tls-ca-bundle.pem" \
-    "${root_mount}/etc/ca-certificates/extracted/tls-ca-bundle.pem"
-
-  arch-chroot "${root_mount}" \
-    /usr/bin/qemu-arm-static\
-    /usr/bin/bash "/repository/archlinux_prepare_intochroot.sh"
-}
-
-
 compress_image() {
   tar_image="$(custom_image_path)"
 
@@ -47,8 +29,27 @@ compress_image() {
     --xattrs \
     -cjpvf \
     "${tar_image}" \
-    "."
+    "${root_mount}"
   info "Done."
+}
+
+prepare_install() {
+  # Install qemu into the chroot
+  cp "$(command -v qemu-arm-static)" "${root_mount}/usr/bin"
+
+  # Allow access from chroot to our repository
+  # cp -Tr "${ScriptDir}" "root/repository"
+  # trap 'cleanupInstall' EXIT
+
+  # Fix for no internet in the chroot
+  # cp             "/etc/resolv.conf" \
+  #   "${root_mount}/etc/resolv.conf"
+
+  # Fix for ca-certificates not updating
+  cp             "/etc/ca-certificates/extracted/tls-ca-bundle.pem" \
+    "${root_mount}/etc/ca-certificates/extracted/tls-ca-bundle.pem"
+
+  arch-chroot "${root_mount}" /usr/bin/bash || true
 }
 
 setup_custom_image() {
