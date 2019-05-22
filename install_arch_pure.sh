@@ -13,6 +13,7 @@ echo '║          ArchLinuxARM on your microSD card.               ║'
 echo '║                                                           ║'
 echo '╚═══════════════════════════════════════════════════════════╝'
 
+# Custom config to disable prompts
 rpi_version=3
 # create_and_mount_fake_device
 
@@ -25,6 +26,5 @@ step_download_image
 step_umount_device
 step_partition_device
 step_extract_to_disk
-step_umount_device
 
 step_flash_finish

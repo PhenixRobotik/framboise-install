@@ -13,9 +13,10 @@ echo '║                a custom ArchLinuxARM image.               ║'
 echo '║                                                           ║'
 echo '╚═══════════════════════════════════════════════════════════╝'
 
+# Custom config to disable prompts
+rpi_version=3
 create_and_mount_fake_device
 
-rpi_version=3
 prompt_device
 prompt_confirmation
 prompt_raspberry_pi_image
@@ -26,7 +27,9 @@ step_umount_device
 step_partition_device
 step_extract_to_disk
 
-# download_qemu
+download_qemu
 prepare_install
 setup_custom_image
 compress_image
+
+step_flash_finish
