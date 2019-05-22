@@ -20,9 +20,9 @@ updateSystem() {
 createUser() {
   info "Creating phenix user…"
   useradd --create-home phenix
-  echo "bornagain" | passwd mike
+  echo "phenix:bornagain" | chpasswd
 }
-asUser() { sudo -u mike -s -- $@; }
+asUser() { sudo -u phenix -s -- $@; }
 
 # Install AUR helper
 installYay() {

@@ -17,7 +17,7 @@ update_system() {
 create_user() {
   info "Creating phenix user…"
   useradd --create-home phenix
-  echo "bornagain" | passwd phenix
+  echo "phenix:bornagain" | chpasswd
 }
 as_user() { sudo -u phenix -s -- $@; }
 
