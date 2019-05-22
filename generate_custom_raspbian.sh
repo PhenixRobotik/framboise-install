@@ -4,8 +4,6 @@ set -euf -o pipefail
 # shellcheck source=functions.sh
 source "functions/_.sh"
 
-test_sudo "$@"
-
 echo '╔═══════════════════════════════════════════════════════════╗'
 echo '║                                                           ║'
 echo '║   Welcome! This program will automate the generation of   ║'

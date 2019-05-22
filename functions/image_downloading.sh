@@ -60,6 +60,7 @@ hash_check() {
 step_download_image() {
   # shellcheck disable=SC2016
   download_path="${CacheDir}/downloads"
+  as_user mkdir -p "${download_path}"
   img_path="${download_path}/${img_name}"
   hash_path="${download_path}/${hash_name}"
 

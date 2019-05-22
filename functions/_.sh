@@ -1,11 +1,15 @@
 #!/bin/env bash
 
 FunctionsDir="$(dirname "$(realpath "${BASH_SOURCE}")")"
-CacheDir="${FunctionsDir}/../cache"
 CustomizationsDir="${FunctionsDir}/../customizations"
+CacheDir="${FunctionsDir}/../cache"
 
 # shellcheck source=base.sh
 source "${FunctionsDir}/base.sh"
+
+test_sudo "$@"
+as_user mkdir -p "${CacheDir}"
+
 # shellcheck source=image_downloading.sh
 source "${FunctionsDir}/image_downloading.sh"
 # shellcheck source=device_partitionning.sh

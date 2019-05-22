@@ -2,9 +2,7 @@
 set -euf -o pipefail
 
 # shellcheck source=functions.sh
-source "functions.sh"
-
-test_sudo "$@"
+source "functions/_.sh"
 
 echo '╔═══════════════════════════════════════════════════════════╗'
 echo '║                                                           ║'
