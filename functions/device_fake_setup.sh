@@ -2,8 +2,7 @@
 
 create_fake_device() {
   info "Creating file for fake device…"
-  user_home="$(as_user bash -c 'echo $HOME')"
-  DeviceFile="${user_home}/.cache/lodevice.img"
+  DeviceFile="${CacheDir}/lodevice.img"
   # 2GB file should be enough
   fallocate "${DeviceFile}" -l 4G
   # dd if="/dev/zero" of="${DeviceFile}" bs=100M count=20

@@ -59,8 +59,7 @@ hash_check() {
 
 step_download_image() {
   # shellcheck disable=SC2016
-  user_home="$(as_user bash -c 'echo $HOME')"
-  download_path="${user_home}/.cache"
+  download_path="${CacheDir}/downloads"
   img_path="${download_path}/${img_name}"
   hash_path="${download_path}/${hash_name}"
 

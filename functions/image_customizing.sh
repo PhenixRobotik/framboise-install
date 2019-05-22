@@ -1,11 +1,5 @@
 #!/bin/env bash
 
-custom_image_path() {
-  user_home="$(as_user bash -c 'echo $HOME')"
-  echo "${user_home}/.cache/custom_raspberrypi.tar.bz2"
-}
-
-
 download_qemu() {
   info "Installing dependencies for chroot…"
   hash "apt-get" && apt-get install qemu-arm-static
@@ -15,7 +9,7 @@ download_qemu() {
 }
 
 compress_image() {
-  tar_image="$(custom_image_path)"
+  tar_image="${CacheDir}/custom_raspberrypi.tar.bz2"
 
   info "Compressing to ${tar_image}…"
   tar -C "${root_mount}"\
