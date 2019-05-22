@@ -53,14 +53,18 @@ step_partition_device() {
   sync
   info "Done."
 
-  # Getting new partition paths
-  blocks="$(lsblk "${SDCARD}" -ln -o PATH,MOUNTPOINT | awk '{print $1}')"
-  boot_block="$(echo "${blocks}" | grep "^${SDCARD}.*1$")"
-  root_block="$(echo "${blocks}" | grep "^${SDCARD}.*2$")"
+  detect_partitions
 
   info "Formating partitions…"
   mkfs.vfat "${boot_block}"
   mkfs.ext4 -F "${root_block}"
   sync
   info "Done."
+}
+
+detect_partitions() {
+  # Getting new partition paths
+  blocks="$(lsblk "${SDCARD}" -ln -o PATH,MOUNTPOINT | awk '{print $1}')"
+  boot_block="$(echo "${blocks}" | grep "^${SDCARD}.*1$")"
+  root_block="$(echo "${blocks}" | grep "^${SDCARD}.*2$")"
 }
