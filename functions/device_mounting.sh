@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 step_mount_device() {
-  root_mount="/tmp/raspberrypi/root"
+  root_mount="/mnt/raspberrypi/root"
   # Bsdtar does not like to extract to fat32, so we'll need to mount separately
   if [[ -n "${SEPARATED_TREE:-}" ]]; then
     boot_mount="/tmp/raspberrypi/boot"

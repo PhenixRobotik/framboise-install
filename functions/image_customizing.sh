@@ -2,20 +2,15 @@
 
 custom_image_path() {
   user_home="$(as_user bash -c 'echo $HOME')"
-  echo "${user_home}/.cache/custom_archlinuxarm.tar.bz2"
+  echo "${user_home}/.cache/custom_raspberrypi.tar.bz2"
 }
 
 
 download_qemu() {
   info "Installing dependencies for chroot…"
-  hash "apt-get"  && apt-get install qemu-arm-static
+  hash "apt-get" && apt-get install qemu-arm-static
   ArchPackages=( arch-install-scripts qemu-arm-static )
-  hash "yaourt"   && sudo -u "${SUDO_USER}" yaourt -S --noconfirm --needed "${ArchPackages[@]}"
-  hash "trizen"   && sudo -u "${SUDO_USER}" trizen -S --noconfirm --needed "${ArchPackages[@]}"
-  hash "yay"      && sudo -u "${SUDO_USER}" yay    -S --noconfirm --needed "${ArchPackages[@]}"
-  # systemctl restart systemd-binfmt
-  # update-binfmts --importdir /usr/lib/binfmt.d/ --enable arm
-
+  sudo -u "${SUDO_USER}" yay -S --noconfirm --needed "${ArchPackages[@]}"
   info "Done."
 }
 
