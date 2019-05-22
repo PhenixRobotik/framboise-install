@@ -22,10 +22,11 @@ create_user() {
 as_user() { sudo -u phenix -s -- $@; }
 
 install_dependencies() {
-
+  :
 }
 
 install_code() {
+  :
   # # Install dependencies
   # pacman -S --noconfirm --needed python-yaml python-evdev
   #
