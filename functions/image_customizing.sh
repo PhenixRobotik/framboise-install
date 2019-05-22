@@ -9,11 +9,12 @@ custom_image_path() {
 download_qemu() {
   info "Installing dependencies for chroot…"
   hash "apt-get"  && apt-get install qemu-arm-static
-  ArchPackages=( binfmt-qemu-static qemu-arm-static arch-install-scripts )
+  ArchPackages=( arch-install-scripts qemu-arm-static )
   hash "yaourt"   && sudo -u "${SUDO_USER}" yaourt -S --noconfirm --needed "${ArchPackages[@]}"
   hash "trizen"   && sudo -u "${SUDO_USER}" trizen -S --noconfirm --needed "${ArchPackages[@]}"
   hash "yay"      && sudo -u "${SUDO_USER}" yay    -S --noconfirm --needed "${ArchPackages[@]}"
-  update-binfmts --importdir /usr/lib/binfmt.d/ --enable arm
+  # systemctl restart systemd-binfmt
+  # update-binfmts --importdir /usr/lib/binfmt.d/ --enable arm
 
   info "Done."
 }
