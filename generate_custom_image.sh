@@ -2,7 +2,7 @@
 set -euf -o pipefail
 
 # shellcheck source=functions.sh
-source "functions.sh"
+source "functions/_.sh"
 
 test_sudo "$@"
 
@@ -26,9 +26,7 @@ step_umount_device
 step_partition_device
 step_extract_to_disk
 
-download_qemu
-step_mount_device
+# download_qemu
 prepare_install
+setup_custom_image
 compress_image
-
-disable_fake_device

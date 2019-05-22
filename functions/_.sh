@@ -17,3 +17,10 @@ source "${FunctionsDir}/device_writing.sh"
 source "${FunctionsDir}/device_fake_setup.sh"
 # shellcheck source=image_customizing.sh
 source "${FunctionsDir}/image_customizing.sh"
+
+
+cleanup() {
+  step_mount_device_cleanup
+  create_and_mount_fake_device_cleanup
+}
+trap 'cleanup' EXIT

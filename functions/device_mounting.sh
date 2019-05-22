@@ -17,3 +17,8 @@ step_mount_device() {
 
   sync
 }
+
+step_mount_device_cleanup() {
+  umount --recursive "${boot_mount}" || true
+  umount --recursive "${root_mount}" || true
+}
