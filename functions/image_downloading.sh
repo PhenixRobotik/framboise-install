@@ -5,6 +5,8 @@
 
 
 prompt_raspberry_pi_image_archlinux() {
+  distro="archlinux"
+
   if [[ -z "${rpi_version}" ]]; then
     read -r -p "Please enter your RaspberryPi version number [2/default=3]: " rpi_version
   fi
@@ -24,6 +26,8 @@ prompt_raspberry_pi_image_archlinux() {
 }
 
 prompt_raspberry_pi_image_debian() {
+  distro="debian"
+
   img_name="2019-04-08-raspbian-stretch.zip"
   img_srv="https://downloads.raspberrypi.org/raspbian/images/raspbian-2019-04-09"
 

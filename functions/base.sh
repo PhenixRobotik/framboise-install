@@ -38,7 +38,7 @@ prompt_device() {
 }
 
 prompt_confirmation() {
-  echo       "This program will FORMAT ${SDCARD}."
+  warning    "This program will FORMAT ${SDCARD}."
   read -r -p "Are you sure you want to continue? (y/n): " CONTINUE
 
   if [[ "${CONTINUE^^}" != "Y" ]]; then

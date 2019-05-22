@@ -85,7 +85,7 @@ installCleanup() {
   rm /var/cache/pacman/pkg/*.xz
 }
 
-echo "Inside the chroot !"
+warning "Inside the chroot !"
 
 updateSystem
 createUser

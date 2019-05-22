@@ -32,21 +32,18 @@ prepare_install() {
   # Install qemu into the chroot
   cp "$(command -v qemu-arm-static)" "${root_mount}/usr/bin"
 
-  # Allow access from chroot to our repository
-  # cp -Tr "${ScriptDir}" "root/repository"
-  # trap 'cleanupInstall' EXIT
+  pre_chroot_file="${CustomizationsDir}/pre_chroot_${distro}.sh"
+  in_chroot_file="${CustomizationsDir}/in_chroot_${distro}.sh"
 
-  # Fix for no internet in the chroot
-  # cp             "/etc/resolv.conf" \
-  #   "${root_mount}/etc/resolv.conf"
+  if [[ -f "${pre_chroot_file}" ]]; then
+    source "${pre_chroot_file}"
+  fi
 
-  # Fix for ca-certificates not updating
-  # cp             "/etc/ca-certificates/extracted/tls-ca-bundle.pem" \
-  #   "${root_mount}/etc/ca-certificates/extracted/tls-ca-bundle.pem"
-
-  arch-chroot "${root_mount}" /bin/bash || true
-}
-
-setup_custom_image() {
-  img_path="$(custom_image_path)"
+  if [[ -f "${in_chroot_file}" ]]; then
+    cp "${in_chroot_file}" "${root_mount}/in_chroot.sh"
+    chmod +x "${root_mount}/in_chroot.sh"
+    arch-chroot "${root_mount}" /bin/bash "/in_chroot.sh" || true
+  else
+    arch-chroot "${root_mount}" /bin/bash || true
+  fi
 }

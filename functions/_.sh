@@ -1,6 +1,8 @@
 #!/bin/env bash
 
 FunctionsDir="$(dirname "$(realpath "${BASH_SOURCE}")")"
+CacheDir="${FunctionsDir}/../cache"
+CustomizationsDir="${FunctionsDir}/../customizations"
 
 # shellcheck source=base.sh
 source "${FunctionsDir}/base.sh"

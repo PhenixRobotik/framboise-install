@@ -18,7 +18,6 @@ step_umount_device() {
     exit 1
   fi
 
-  echo "${blocksmounted}"
   while read -r blockmounted; do
     [[ -z "${blockmounted}" ]] && continue
 

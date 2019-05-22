@@ -31,7 +31,6 @@ step_mount_device
 
 download_qemu
 prepare_install
-# setup_custom_image
 # compress_image
-#
+
 step_flash_finish

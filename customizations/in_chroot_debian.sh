@@ -51,7 +51,7 @@ install_cleanup() {
 export PATH=$PATH:/sbin:/usr/sbin
 export LC_ALL=C
 
-echo "Inside the chroot !"
+warning "Inside the chroot !"
 
 update_ystem
 create_user
