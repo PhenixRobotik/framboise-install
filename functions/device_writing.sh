@@ -19,6 +19,18 @@ step_extract_to_disk() {
   # step_umount_device
 }
 
+step_extract_dd_image_to_file() {
+  info "Extracting ${img_path}..."
+
+  mkdir -p "${FunctionsDir}/../cache"
+  unzip -o "${img_path}" -d "${FunctionsDir}/../cache"
+
+  DeviceFile="$(find "${FunctionsDir}/../cache" -name "*.img")"
+
+  mount_fake_device
+  detect_partitions
+}
+
 step_write_dd_image_to_disk() {
   info "Writing dd image to ${SDCARD}..."
 

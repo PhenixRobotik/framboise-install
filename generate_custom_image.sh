@@ -9,7 +9,7 @@ test_sudo "$@"
 echo '╔═══════════════════════════════════════════════════════════╗'
 echo '║                                                           ║'
 echo '║   Welcome! This program will automate the generation of   ║'
-echo '║                a custom ArchLinuxARM image.               ║'
+echo '║                  a custom Raspbian image.                 ║'
 echo '║                                                           ║'
 echo '╚═══════════════════════════════════════════════════════════╝'
 
@@ -24,12 +24,14 @@ prompt_raspberry_pi_image
 step_download_image
 
 step_umount_device
-step_partition_device
-step_extract_to_disk
+# step_partition_device
+# step_extract_to_disk
+step_extract_dd_image_to_file
+step_mount_device
 
 download_qemu
 prepare_install
-setup_custom_image
-compress_image
-
+# setup_custom_image
+# compress_image
+#
 step_flash_finish
