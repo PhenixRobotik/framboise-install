@@ -22,7 +22,7 @@ as_user() {
 
 
 prompt_device() {
-  if [[ -z "${SDCARD}" ]]; then
+  if [[ -z "${SDCARD:-}" ]]; then
     read -r -p "Please enter your sdcard device name [sdb]: " SDCARD
   fi
 
