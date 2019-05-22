@@ -32,16 +32,14 @@ step_extract_dd_image_to_file() {
 }
 
 step_write_dd_image_to_disk() {
-  info "Writing dd image to ${SDCARD}..."
+  info "Writing dd image ${img_path} to ${SDCARD}..."
 
-  unzip -p "${img_path}" | dd of="${SDCARD}" \
+  dd if="${img_path}" of="${SDCARD}" \
     bs=4M conv=fsync \
     status=progress
 
   info "Syncing... (this might take a while)"
   sync
 
-  partprobe
-  detect_partitions
   info "Done!"
 }
