@@ -26,26 +26,31 @@ install_dependencies() {
 }
 
 install_code() {
-  :
-  # # Install dependencies
-  # pacman -S --noconfirm --needed python-yaml python-evdev
-  #
-  # # Copy code to the correct location
-  # cp -Tr "${ScriptDir}/StrangerFamily" /home/mike/StrangerFamily
-  #
-  # # Setup boot service
-  # cp "${ScriptDir}/stranger-family.service" \
-  #           /usr/lib/systemd/system/stranger-family.service
-  # chmod 644 /usr/lib/systemd/system/stranger-family.service
-  # # Useless inside chroot:
-  # # systemctl daemon-reload
-  # systemctl enable stranger-family
-  # # Useless inside chroot:
-  # # systemctl status stranger-family # Should be enabled, stopped
+  info "Configuring autologin to graphical session… FIXME not tested"
+
+  systemctl set-default graphical.target
+  ln -fs  /etc/systemd/system/autologin@.service \
+          /etc/systemd/system/getty.target.wants/getty@tty1.service
+
+  info "Done."
+
+
+  info "Cloning, building and installing our software…"
+  cd /tmp
+
+  as_user git clone 'https://github.com/phenixrobotik/framboise-software.git'
+  cd "framboise-software"
+  as_user meson "_build"
+  cd "_build"
+  as_user ninja
+  ninja install
+
+  info "Enabling userland SystemD unit…"
+  as_user systemctl --enable "framboise-brain"
 }
 
 install_cleanup() {
-  rm /var/cache/pacman/pkg/*.xz
+  # rm /var/cache/pacman/pkg/*.xz
 }
 
 # Some bug fixes ?
@@ -54,7 +59,7 @@ export LC_ALL=C
 
 warning "Inside the chroot !"
 
-update_ystem
+update_system
 create_user
 
 install_dependencies
