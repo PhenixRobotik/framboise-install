@@ -1,10 +1,10 @@
 #!/bin/bash -xe
 ScriptDir="$(dirname $(readlink -f $0))"
+cd "${ScriptDir}"
 
 info()    { printf '\e[0;32m[INFO] %s\e[0m\n' "$@"; }
 warning() { printf '\e[0;35m[WARNING] %s\e[0m\n' "$@"; }
 error()   { printf '\e[0;31m[ERROR] %s\e[0m\n' "$@"; }
-
 
 update_system() {
   info "Updating the system…"
@@ -21,23 +21,21 @@ create_user() {
 }
 as_user() { sudo -u phenix -s -- $@; }
 
-install_dependencies() {
-  :
-}
-
 install_code() {
   info "Configuring autologin to graphical session… FIXME not tested"
+  "./autologin.sh"
 
-  systemctl set-default graphical.target
-  ln -fs  /etc/systemd/system/autologin@.service \
-          /etc/systemd/system/getty.target.wants/getty@tty1.service
+  info "Configuring testing repo…"
+  "./add_testing_repo.sh"
 
-  info "Done."
+
+  info "Installing software dependencies…"
+  apt install -t testing meson
+  apt install libgtkmm-3.0-dev
 
 
   info "Cloning, building and installing our software…"
   cd /tmp
-
   as_user git clone 'https://github.com/phenixrobotik/framboise-software.git'
   cd "framboise-software"
   as_user meson "_build"
@@ -64,7 +62,6 @@ warning "Inside the chroot !"
 update_system
 create_user
 
-install_dependencies
 install_code
 
 install_cleanup

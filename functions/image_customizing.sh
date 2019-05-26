@@ -26,18 +26,14 @@ prepare_install() {
   # Install qemu into the chroot
   cp "$(command -v qemu-arm-static)" "${root_mount}/usr/bin"
 
-  pre_chroot_file="${CustomizationsDir}/pre_chroot_${distro}.sh"
-  in_chroot_file="${CustomizationsDir}/in_chroot_${distro}.sh"
+  pre_chroot_file="${CustomizationsDir}/${distro}_pre.sh"
+  in_chroot_files="${CustomizationsDir}/${distro}_files"
 
   if [[ -f "${pre_chroot_file}" ]]; then
     source "${pre_chroot_file}"
   fi
 
-  if [[ -f "${in_chroot_file}" ]]; then
-    cp "${in_chroot_file}" "${root_mount}/in_chroot.sh"
-    chmod +x "${root_mount}/in_chroot.sh"
-    arch-chroot "${root_mount}" /bin/bash "/in_chroot.sh" || true
-  else
-    arch-chroot "${root_mount}" /bin/bash || true
-  fi
+  cp -R "${in_chroot_files}" "${root_mount}/tmp/customize"
+  chmod +x "${root_mount}/tmp/customize/customize.sh"
+  arch-chroot "${root_mount}" /bin/bash "/tmp/customize/customize.sh" || true
 }
