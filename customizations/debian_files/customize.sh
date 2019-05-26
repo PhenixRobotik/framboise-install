@@ -23,28 +23,13 @@ as_user() { sudo -u phenix -s -- $@; }
 
 install_code() {
   info "Configuring autologin to graphical session… FIXME not tested"
-  "./autologin.sh"
+  "${ScriptDir}/autologin.sh"
 
   info "Configuring testing repo…"
-  "./add_testing_repo.sh"
+  "${ScriptDir}/add_testing_repo.sh"
 
-
-  info "Installing software dependencies…"
-  apt install -t testing meson
-  apt install libgtkmm-3.0-dev
-
-
-  info "Cloning, building and installing our software…"
-  cd /tmp
-  as_user git clone 'https://github.com/phenixrobotik/framboise-software.git'
-  cd "framboise-software"
-  as_user meson "_build"
-  cd "_build"
-  as_user ninja
-  ninja install
-
-  info "Enabling userland SystemD unit…"
-  as_user systemctl --enable "framboise-brain"
+  info "Installing our software…"
+  "${ScriptDir}/install_software.sh"
 }
 
 install_cleanup() {
