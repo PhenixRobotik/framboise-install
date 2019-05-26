@@ -50,7 +50,9 @@ install_code() {
 }
 
 install_cleanup() {
+  info "Cleaning the installation…"
   # rm /var/cache/pacman/pkg/*.xz
+  info "Done."
 }
 
 # Some bug fixes ?
