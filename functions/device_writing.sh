@@ -31,10 +31,16 @@ step_extract_dd_image_to_file() {
   detect_partitions
 }
 
-step_write_dd_image_to_disk() {
-  info "Writing dd image ${img_path} to ${SDCARD}..."
+step_dd_image_continue() {
+  DeviceFile="$(find "${FunctionsDir}/../cache" -name "*raspbian*.img")"
+  mount_fake_device
+  detect_partitions
+}
 
-  dd if="${img_path}" of="${SDCARD}" \
+step_write_dd_image_to_disk() {
+  info "Writing dd image ${DeviceFile} to ${SDCARD}..."
+
+  dd if="${DeviceFile}" of="${SDCARD}" \
     bs=4M conv=fsync \
     status=progress
 
