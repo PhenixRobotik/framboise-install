@@ -22,6 +22,12 @@ compress_image() {
   info "Done."
 }
 
+chroot_customize() {
+  arch-chroot "${root_mount}" /bin/bash "/root/customize/customize.sh" || true
+}
+chroot_bash() {
+  arch-chroot "${root_mount}" /bin/bash || true
+}
 prepare_install() {
   # Install qemu into the chroot
   cp "$(command -v qemu-arm-static)" "${root_mount}/usr/bin"
@@ -33,7 +39,12 @@ prepare_install() {
     source "${pre_chroot_file}"
   fi
 
-  cp -R "${in_chroot_files}" "${root_mount}/tmp/customize"
-  chmod +x "${root_mount}/tmp/customize/customize.sh"
-  arch-chroot "${root_mount}" /bin/bash "/tmp/customize/customize.sh" || true
+  cp -R "${in_chroot_files}" "${root_mount}/root/customize"
+  chmod +x "${root_mount}/root/customize/customize.sh"
+
+  if [[ -n "${NO_CUSTOMIZE:-}" ]]; then
+    chroot_bash
+  else
+    chroot_customize
+  fi
 }

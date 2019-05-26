@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
+rm                                "/etc/apt/preferences.d/testing"
 touch                             "/etc/apt/preferences.d/testing"
 echo "Package: *"             >>  "/etc/apt/preferences.d/testing"
 echo "Pin: release n=testing" >>  "/etc/apt/preferences.d/testing"
 echo "Pin-Priority: 100"      >>  "/etc/apt/preferences.d/testing"
+
+
+rm                                "/etc/apt/preferences.d/stretch"
 touch                             "/etc/apt/preferences.d/stretch"
 echo "Package: *"             >>  "/etc/apt/preferences.d/stretch"
 echo "Pin: release n=stretch" >>  "/etc/apt/preferences.d/stretch"
 echo "Pin-Priority: 700"      >>  "/etc/apt/preferences.d/stretch"
+
+rm     "/etc/apt/sources.list.d/testing.list"
 touch  "/etc/apt/sources.list.d/testing.list"
 echo "deb http://deb.debian.org/debian/ testing main" \
     >> "/etc/apt/sources.list.d/testing.list"

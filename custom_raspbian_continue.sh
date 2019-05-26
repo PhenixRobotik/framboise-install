@@ -19,6 +19,8 @@ echo '╚═══════════════════════�
 # compress_image
 #
 # step_flash_finish
+distro=debian
 
 step_dd_image_continue
 step_mount_device
+NO_CUSTOMIZE=yes prepare_install
